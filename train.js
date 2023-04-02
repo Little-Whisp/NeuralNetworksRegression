@@ -31,14 +31,14 @@ function checkData(data){
 
         // data toevoegen aan neural network
         for (let wine of trainData) {
-                nn.addData({ quality: wine.quality, citricAcid: wine.citricAcid, residualSugar: wine.residualSugar}, {alcohol: wine.alcohol})
+                nn.addData({alcohol: wine.alcohol, citricAcid: wine.citricAcid, residualSugar: wine.residualSugar}, {quality: wine.quality})
         }
 
         nn.normalizeData()
 
         const chartdata = data.map(wine => ({
-                x: wine.quality,
-                y: wine.alcohol,
+                x: wine.alcohol,
+                y: wine.quality,
         }))
 
         // chartjs aanmaken
@@ -53,12 +53,12 @@ async function finishedTraining() {
 
 async function makePrediction() {
 
-        let wineQuality = document.getElementById('quality').value;
+        let wineAlcohol = document.getElementById('Alcohol').value;
         let wineCitricAcid = document.getElementById('citricAcid').value;
         let residualSugar = document.getElementById('residualSugar').value;
 
-        const results = await nn.predict({ quality:parseInt(wineQuality), CitricAcid:parseInt(wineCitricAcid), residualSugar:parseInt(residualSugar) })
-        result.innerText = `How much alcohol: ${(results[0].alcohol)}`
+        const results = await nn.predict({ alcohol:parseInt(wineAlcohol), CitricAcid:parseInt(wineCitricAcid), residualSugar:parseInt(residualSugar) })
+        result.innerText = `The wine quality: ${(results[0].quality)}`
 }
 
 function save(){
